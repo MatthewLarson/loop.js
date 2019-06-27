@@ -5,12 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Static Template</title>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/qunit/qunit-2.9.2.css"
+    />
+    <script src="https://code.jquery.com/qunit/qunit-2.9.2.js"></script>
   </head>
   <body>
     <h1>
       This is a static template, there is no bundler or bundling involved!
     </h1>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
     <script type="text/javascript" src="loop.js"></script>
-    <script type="text/javascript" src="tests.js"></script>
+    <script>
+      QUnit.test("for loop: 0 - 10", function(assert) {
+        //var x = 0;
+        var results = [];
+        var correctResults = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        var loopObj;
+        Loop()
+          .for(0)
+          .to(10)
+          .do(function(a, b, c) {
+            //assert.equal(a, x, "We expect value of 'a' to be " + x);
+            results.push(a);
+            //x++;
+            loopObj = c;
+          });
+        assert.propEqual(
+          results,
+          correctResults,
+          "We expect 'results' array to match the 'correctResults' array."
+        );
+        assert.equal(
+          loopObj.isReverse,
+          false,
+          "We expect isReverse to be false."
+        );
+        assert.equal(loopObj.begin, 0, "We expect 'begin' to be 0");
+        assert.equal(loopObj.end, 10, "We expect 'end' to be 10");
+        assert.equal(loopObj.increment, 1, "We expect 'increment' to be 1");
+        assert.equal(
+          results.length,
+          10,
+          "We expect there to be 10 items added to results array."
+        );
+      });
+
+      QUnit.test("for loop: [unset] - 10", function(assert) {
+        var x = 0;
+        var results = [];
+        Loop()
+          .for()
+          .to(10)
+          .do(function(a, b, c) {
+            assert.equal(a, x, "We expect value of 'a' to be " + x);
+            results.push(a);
+            x++;
+          });
+        assert.equal(
+          results.length,
+          10,
+          "We expect there to be 10 items added to results array."
+        );
+      });
+    </script>
   </body>
 </html>
